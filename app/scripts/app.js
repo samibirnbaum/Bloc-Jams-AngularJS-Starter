@@ -10,11 +10,15 @@
         $stateProvider /*SET default settings for the state*/
             .state("landing", { /*name of the state*/
                 url: "/",       /*its url in the browser*/
-                templateUrl: "/templates/landing.html" /*when you acces that url what template (state) it will activate*/
+                templateUrl: "/templates/landing.html" /*for this landing state, this is the template html*/
             })
             .state("album", {
                 url: "/album",
                 templateUrl: "/templates/album.html"
+            })
+            .state("collection", {
+                url: "/collection",
+                templateUrl: "/templates/collection.html"
             });
         
     }
