@@ -3,7 +3,7 @@
 
     function config ($stateProvider, $locationProvider) {  /*configuring default behaviour of a module with providers*/
         $locationProvider /*SET properties on the location object*/
-            .html5mode ({
+            .html5Mode({
                 enabled: true, /*disables hashbang url when user changes location*/
                 requireBase: false            
             });
