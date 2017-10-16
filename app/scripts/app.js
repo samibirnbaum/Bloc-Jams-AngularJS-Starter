@@ -7,7 +7,7 @@
                 enabled: true, /*disables hashbang url when user changes location*/
                 requireBase: false            
             });
-        $stateProvider /*SET default settings for the state*/
+        $stateProvider /*SET default settings for the state*/ /*manipulate the url to load in a template*/
             .state("landing", { /*name of the state*/
                 url: "/",       /*its url in the browser*/
                 templateUrl: "/templates/landing.html" /*for this landing state, this is the template html*/
@@ -25,6 +25,6 @@
     
     angular
         .module("blocJams", ["ui.router"])
-        .config(config);
+        .config(config); /*our providers (configuration) added to the root module here*/
 
 })();
