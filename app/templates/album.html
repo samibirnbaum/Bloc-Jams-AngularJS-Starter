@@ -11,10 +11,18 @@
     </section>
     
     <table class="album-view-song-list">
-        <tr class="album-view-song-item">
-            <td class="song-item-number">1</td>
+        <!--when the user puts mouseover tr a variable called 'hovered' is created with a value of true assigned-->
+        <tr class="album-view-song-item" ng-mouseover="hovered = true" ng-mouseleave="hovered = false"> 
+            <td class="song-item-number"> <!--different elements we could show in this first cell-->
+                <span ng-show="!playing && !hovered">1</span>
+                <a class="album-song-button" ng-show="!playing && hovered"><span class="ion-play"></span></a>
+                <a class="album-song-button" ng-show="playing"><span class="ion-pause"></span></a>
+            </td>
             <td class="song-item-title">Blue</td>
             <td class="song-item-duration">3:31</td>
         </tr>
     </table>
 </main>
+
+<ng-include src="'/templates/player_bar.html'"></ng-include> <!--reason for full URL = being called from index page-->
+                                                             <!--the ngInclude directive takes in source url as a string-->
