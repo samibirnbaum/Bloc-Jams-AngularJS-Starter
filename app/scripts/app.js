@@ -10,6 +10,7 @@
         $stateProvider /*SET default settings for the state*/ /*manipulate the url to load in a template*/
             .state("landing", { /*name of the state*/
                 url: "/",       /*its url in the browser*/
+                controller: "LandingCtrl as landing",
                 templateUrl: "/templates/landing.html" /*for this landing state, this is the template html*/
             })
             .state("album", {
@@ -18,6 +19,7 @@
             })
             .state("collection", {
                 url: "/collection",
+                controller: "CollectionCtrl as collection",
                 templateUrl: "/templates/collection.html"
             });
         
