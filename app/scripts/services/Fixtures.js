@@ -38,6 +38,16 @@
         Fixtures.getAlbum = function() { /*this is the only method that exists in our fixtures object*/
             return albumPicasso          /*and it returns the albumPicasso object that it has access to in its local scope*/
         };
+
+        Fixtures.getCollection = function(numberOfAlbums) {
+            var albumCollectionArray = [];
+            
+            for(var i=0; i<numberOfAlbums; i++) {
+                albumCollectionArray.push(albumPicasso);    
+            }
+            
+            return albumCollectionArray;
+        };
         
         return Fixtures;    /*you get this object when you inject (use) this service*/
     }
@@ -47,6 +57,5 @@
     angular
         .module("blocJams")
         .factory("Fixtures", Fixtures); /*when you inject this service as a dependancy to a module or controller, that module or controller will have access to the Fixtures object which is automatically returned by this service*/
-
 
 })();
