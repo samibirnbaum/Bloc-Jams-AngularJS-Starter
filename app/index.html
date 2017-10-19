@@ -23,10 +23,12 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.4.2/angular-ui-router.min.js"></script> <!--external ui-router module script-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/buzz/1.2.0/buzz.min.js"></script> <!--buzz js library for working with sounds/music-->        
         <script src="scripts/app.js"></script> <!--holds main module and config-->
         <script src="scripts/controllers/LandingCtrl.js"></script> <!--holds controller which must be attached to module-->
         <script src="scripts/controllers/CollectionCtrl.js"></script>
         <script src="scripts/controllers/AlbumCtrl.js"></script>
         <script src="scripts/services/Fixtures.js"></script> <!--the service which holds generic album data-->
+        <script src="scripts/services/SongPlayer.js"></script> <!--the service which holds song playing data that is generic enough to share between views, not just for one particular view-->
     </body>
 </html>
