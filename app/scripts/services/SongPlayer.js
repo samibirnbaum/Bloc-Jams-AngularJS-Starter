@@ -18,10 +18,6 @@
 
         
         /**PRIVATE FUNCTIONS 
-        * @function getSongIndex
-        * @desc for whatever song is playing, it will give us its index in the songs array
-        * @param {Number} song
-        
         * @function setSong
         * @desc Stops currently playing song and loads new audio file as currentBuzzObject
         * @param {Object} song
@@ -29,16 +25,19 @@
         * @function playSong
         * @desc plays currentBuzzObject and changes property on song object which impacts ng-show
         * @param {Object} song
-        */
-        var getSongIndex = function(song) {
-            return currentAlbum.songs.indexOf(song);
-        };
         
+        * @function getSongIndex
+        * @desc for whatever song is playing, it will give us its index in the songs array
+        * @param {Number} song
+
+        * @function stopSong
+        * @desc stops currentBuzzObject and changes property on song object which impacts ng-show
+        */
+       
         var setSong = function(song) { /*only needed when changing songs*/
             //TURN OFF THE OLD
             if(currentBuzzObject){  /*if the current song was a song playing, quickly stop that song*/
-                currentBuzzObject.stop();
-                SongPlayer.currentSong.playing = null; /*below we would have set current song to the song object so update the playing property on it*/
+                stopSong();
             }
             //CREATE THE NEW
             currentBuzzObject = new buzz.sound(song.audioUrl, { /*constructor function on the buzz library object to create new buzz object which we can then use the library with*/
@@ -51,6 +50,15 @@
         var playSong = function(song) {
             currentBuzzObject.play();
             song.playing = true;
+        };
+
+        var getSongIndex = function(song) {
+            return currentAlbum.songs.indexOf(song);
+        };
+
+        var stopSong = function() {
+            currentBuzzObject.stop();
+            SongPlayer.currentSong.playing = null;
         };
         
         
@@ -74,7 +82,9 @@
 
         * @function previous
         * @desc stop current song and play previous one (stop all if click previous on song 1)
-        * @param {Object} song
+
+        * @function next
+        * @desc stop current song and play next one (stop all if click next on song 5)
         */
         SongPlayer.play = function(song) {
             song = song || SongPlayer.currentSong; 
@@ -103,14 +113,29 @@
 
             //keep going previous, and click previous again on song 1 - stop everything
             if (currentSongIndex < 0){
-                currentBuzzObject.stop(); //stop song 1 but dont change to any differet song object or index
-                SongPlayer.currentSong.playing = null; //change property on song 1 objcect to reflect nothing playing
+                stopSong();
             }else{//song index not less than zero i.e. clicked previous on song other than 1
                 //set all tracking var's to previous song using setSong method
                 var song = currentAlbum.songs[currentSongIndex];
                 setSong(song);
                 //play that song
                 playSong(song); 
+            }
+        };
+
+        SongPlayer.next = function() {
+            //access next song index
+            var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+            currentSongIndex++;
+
+            //if click next on last song - stop everything
+            if(currentSongIndex > currentAlbum.songs.length-1){
+                stopSong();
+            }else{ //click next on another song
+                var song = currentAlbum.songs[currentSongIndex]; //song object becomes song trying to get to
+                setSong(song); //set all tracking var's based off that song
+                //play that song
+                playSong(song);
             }
         };
         
