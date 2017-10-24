@@ -1,27 +1,30 @@
 (function() {
 
     function seekBar($document) {
-        var calculatePercent = function(seekBar, event) { //takes in the seekbar *JQ*element itself and where the click event took place
-            var offsetX = event.pageX - seekBar.offset().left; //offsetx pixel value from beginning of seekbar
-            var seekBarWidth = seekBar.width(); //returns pixel value of element width
-            var offsetXPercent = offsetX / seekBarWidth; //divides them to give number between 0and1
-            offsetXPercent = Math.max(0, offsetXPercent);
-            offsetXPercent = Math.min(1, offsetXPercent); //ensure figure between 0and1 (useful for when dragging goes too far - because can drag anywhere on the doccument)
-            return offsetXPercent;            
-        };
-        
+        //Directive Definition Object DDO
         return { //returns an object that describes the directive's behavior to Angular's HTML compiler
             templateUrl: '/templates/directives/seek_bar.html', //when utilisted the directive will load this template
             replace: true, //true=replace directives actual element. false=replace contents within element
             restrict: 'E', //only usable as an element (which given these settings, its entirety will be replaced by above template)
             scope: { }, //creates isolated scope for any properties or methods within the directive (no inheritance from parent controller scope)
             link: function(scope, element, attributes) { //automatically generated on directives element - holds direct every time DOM manipulation logic
-                //track value of progress bar
-                scope.value = 0;
-                scope.max = 100;
-
+               
+                /**PRIVATE ATTRIBUTES
+                 * @name seekBar
+                 * @desc JQ selection of directive element
+                 * @type {Object}
+                 */
                 var seekBar = $(element); //the element that the directive is placed on wrapped in JQ object
 
+                /**PRIVATE FUNCTIONS
+                 * @function percentString
+                 * @desc prepares scope value to be used as a percentage in CSS
+                 
+                 * @function calculatePercent
+                 * @desc takes raw event value from seekBar event and returns as decimal point percentage
+                 * @param {jQuery Object} seekBar
+                 * @param {jQuery Object} event
+                 */
                 //change value to percentage
                 var percentString = function() {
                     var value = scope.value;
@@ -30,6 +33,41 @@
                     return percent + "%";
                 };
 
+                var calculatePercent = function(seekBar, event) { //takes in the seekbar *JQ*element itself and where the click event took place
+                    var offsetX = event.pageX - seekBar.offset().left; //offsetx pixel value from beginning of seekbar
+                    var seekBarWidth = seekBar.width(); //returns pixel value of element width
+                    var offsetXPercent = offsetX / seekBarWidth; //divides them to give number between 0and1
+                    offsetXPercent = Math.max(0, offsetXPercent);
+                    offsetXPercent = Math.min(1, offsetXPercent); //ensure figure between 0and1 (useful for when dragging goes too far - because can drag anywhere on the doccument)
+                    return offsetXPercent;            
+                };
+
+                /**PUBLIC ATTRIBUTES
+                 * @name value
+                 * @desc destination of seek bar based on user events
+                 * @type {Number}
+                 
+                 * @name max
+                 * @desc maxiumum value of seek bar movement
+                 * @type {Number} 
+                 */
+                //these values exist here because Ang will check for model updates and then alter the view accordingly
+                //because only public properties are bound to the view from the model
+                scope.value = 0;
+                scope.max = 100;
+ 
+                
+                /**PUBLIC FUNCTIONS
+                 * @function fillStyle
+                 * @desc sole purpose to change the css using scope.value and scope.max
+                  
+                 * @function onClickSeekBar
+                 * @desc when click event happens on seek bar this function fires and changes scope.value (which will the change the view following $digest call at end of JS turn)
+                 * @param {jQuery Object} event
+                 
+                 * @function trackThumb
+                 * @desc when mousedown event occurs this listeners and their functions fire up for mousemove and mouseup
+                 */
                 //style the fill element on the DOM using that percentage
                 scope.fillStyle = function(){
                     return {width: percentString()}; //must be object like this for ng-style directive which changes the css
