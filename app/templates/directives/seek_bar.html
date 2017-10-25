@@ -2,5 +2,5 @@
 <!--same template for both seek bars, volume/song progress-->
     <div class="seek-bar" ng-click="onClickSeekBar($event)"> <!--updates scope.value based on click on xaxis-->
         <div class="fill" ng-style="fillStyle()"></div> <!--every time scope.value updates, so does this style-->
-        <div class="thumb" ng-mousedown="trackThumb()"></div> <!--updates scope.value based on drag along xaxis from thumb-->
+        <div class="thumb" ng-mousedown="trackThumb()" ng-style="thumbStyle()"></div> <!--updates scope.value based on drag along xaxis from thumb-->
     </div>

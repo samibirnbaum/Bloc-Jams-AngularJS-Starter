@@ -73,6 +73,10 @@
                     return {width: percentString()}; //must be object like this for ng-style directive which changes the css
                 };
 
+                scope.thumbStyle = function(){
+                    return {left: percentString()}
+                };
+
                 scope.onClickSeekBar = function(event) {
                     var percent = calculatePercent(seekBar, event); //returns decimal number based on clickevent
                     scope.value = percent * scope.max; //turns decimal number into value
