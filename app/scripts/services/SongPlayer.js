@@ -1,7 +1,7 @@
 /*this service holds a factory type service to hold data/behaviour about the song playing which as a service can be injected into every controller for the benefit of each view*/
 (function() {
 
-    function SongPlayer(Fixtures) {
+    function SongPlayer($rootScope, Fixtures) {
         var SongPlayer = {}; /*like other service the intention is to create an object thats properties and methods will be available to whichever component decides to use the service*/
         
         /**PRIVATE ATTRIBUTES
@@ -19,7 +19,7 @@
         
         /**PRIVATE FUNCTIONS 
         * @function setSong
-        * @desc Stops currently playing song and loads new audio file as currentBuzzObject
+        * @desc Stops currently playing song and loads new audio file as currentBuzzObject + tracks songs progress
         * @param {Object} song
 
         * @function playSong
@@ -44,6 +44,12 @@
                 formats: ["mp3"],
                 preload: true
             });
+            //As it plays update current time
+            currentBuzzObject.bind('timeupdate', function() {
+                $rootScope.$apply(function() {//time update change will sit on the $rootScope
+                    SongPlayer.currentTime = currentBuzzObject.getTime();
+                });
+            });
             SongPlayer.currentSong = song; /*holds song element in songs array - track song with this*/
         };
 
@@ -65,11 +71,15 @@
         /**PUBLIC ATTRIBUTES
         * @name currentSong
         * @desc song object with all song info
-        * @type {Object} 
-        */
+        * @type {Object}
+        
+        * @name currentTime
+        * @desc current playback time (in seconds) of currenly playing song
+        * @type {Number}
+        */ 
         
         SongPlayer.currentSong = null; /*this will hold song element (happens to be an object) from songs array which we can track song with*/
-        
+        SongPlayer.currentTime = null;
         
         /**PUBLIC FUNCTIONS
         * @function play
@@ -85,6 +95,10 @@
 
         * @function next
         * @desc stop current song and play next one (stop all if click next on song 5)
+
+        * @function setCurrentTime
+        * @desc on the buzz object (music file) set the current time to (time) in seconds
+        * @param {Number} time
         */
         SongPlayer.play = function(song) {
             song = song || SongPlayer.currentSong; 
@@ -138,6 +152,12 @@
                 playSong(song);
             }
         };
+
+        SongPlayer.setCurrentTime = function(time) {
+            if(currentBuzzObject){ //check there is a song that has been played and therefore is a buzz object
+                currentBuzzObject.setTime(time); //sets the time on the song in seconds to (time) number
+            }
+        };
         
         return SongPlayer; /*once service is injected, you get the SongPlayer object with all its methods and properties*/
     }
@@ -145,6 +165,6 @@
     
     angular
         .module("blocJams")
-        .factory("SongPlayer", ["Fixtures", SongPlayer]);
+        .factory("SongPlayer", ["$rootScope", "Fixtures", SongPlayer]);
 
 })();

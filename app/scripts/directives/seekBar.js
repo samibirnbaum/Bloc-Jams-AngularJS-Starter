@@ -6,7 +6,9 @@
             templateUrl: '/templates/directives/seek_bar.html', //when utilisted the directive will load this template
             replace: true, //true=replace directives actual element. false=replace contents within element
             restrict: 'E', //only usable as an element (which given these settings, its entirety will be replaced by above template)
-            scope: { }, //creates isolated scope for any properties or methods within the directive (no inheritance from parent controller scope)
+            scope: { 
+                onChange: "&" //a pipeline out for the on-change attribute whose "value" evaluates and invokes a function immediatley
+            }, //creates isolated scope for any properties or methods within the directive (no inheritance from parent controller scope)
             link: function(scope, element, attributes) { //automatically generated on directives element - holds direct every time DOM manipulation logic
                
                 /**PRIVATE ATTRIBUTES
@@ -42,6 +44,12 @@
                     return offsetXPercent;            
                 };
 
+                var notifyOnChange = function(newValue) {
+                    if(typeof scope.onChange === "function"){
+                        scope.onChange({value: newValue});//here we define the value of the value argument which is called in onChange on the html
+                    }
+                };
+
                 /**PUBLIC ATTRIBUTES
                  * @name value
                  * @desc destination of seek bar based on user events
@@ -55,6 +63,15 @@
                 //because only public properties are bound to the view from the model
                 scope.value = 0;
                 scope.max = 100;
+
+                //observes the above attributes in the view for value changes and applies that value change to the public attributes here
+                attributes.$observe("value", function(newValue){
+                    scope.value = newValue;
+                });
+
+                attributes.$observe("max", function(newValue){
+                    scope.max = newvalue;
+                });
  
                 
                 /**PUBLIC FUNCTIONS
@@ -80,6 +97,7 @@
                 scope.onClickSeekBar = function(event) {
                     var percent = calculatePercent(seekBar, event); //returns decimal number based on clickevent
                     scope.value = percent * scope.max; //turns decimal number into value
+                    notifyOnChange(scope.value); //when update scope.value update the value in onChange attribute
                 };
 
                 //when mouse goes down on the thumb listen to mousemove, when mouse goes up, stop listening
@@ -87,7 +105,8 @@
                     $document.bind("mousemove.thumb", function(event){ //tracks mousemove event
                         var percent = calculatePercent(seekBar, event); //calculates number between 0and1 of where you drag
                         scope.$apply(function(){
-                            scope.value = percent * scope.max; //turns decimal into value number which can be used as % in css 
+                            scope.value = percent * scope.max; //turns decimal into value number which can be used as % in css
+                            notifyOnChange(scope.value);
                         });
                     });
 
