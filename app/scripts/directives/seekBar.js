@@ -26,6 +26,10 @@
                  * @desc takes raw event value from seekBar event and returns as decimal point percentage
                  * @param {jQuery Object} seekBar
                  * @param {jQuery Object} event
+                 
+                 * @function notifyOnChange
+                 * @desc insert the argument for the on-change function, which doesn't have access to scope.value otherwise
+                 * @param {Number} newValue
                  */
                 //change value to percentage
                 var percentString = function() {
@@ -61,7 +65,7 @@
                  */
                 //these values exist here because Ang will check for model updates and then alter the view accordingly
                 //because only public properties are bound to the view from the model
-                scope.value = 0;
+                scope.value = 0; //attribute on the directive so can pull down info from songService to update value
                 scope.max = 100;
 
                 //observes the above attributes in the view for value changes and applies that value change to the public attributes here
@@ -70,13 +74,16 @@
                 });
 
                 attributes.$observe("max", function(newValue){
-                    scope.max = newvalue;
+                    scope.max = newValue;
                 });
  
                 
                 /**PUBLIC FUNCTIONS
                  * @function fillStyle
                  * @desc sole purpose to change the css using scope.value and scope.max
+                 * 
+                 * @function thumbStyle
+                 * @desc change the style of the thumb using scope.value and scope.max to get the percentage
                   
                  * @function onClickSeekBar
                  * @desc when click event happens on seek bar this function fires and changes scope.value (which will the change the view following $digest call at end of JS turn)

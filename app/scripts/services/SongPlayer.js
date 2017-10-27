@@ -76,10 +76,15 @@
         * @name currentTime
         * @desc current playback time (in seconds) of currenly playing song
         * @type {Number}
+
+        * @name volume
+        * @desc the current volume which will change on user click or drag on volume seek bar
+        * @type {Number}
         */ 
         
         SongPlayer.currentSong = null; /*this will hold song element (happens to be an object) from songs array which we can track song with*/
         SongPlayer.currentTime = null;
+        SongPlayer.volume = 100; //after volume is changed by user this gets updated
         
         /**PUBLIC FUNCTIONS
         * @function play
@@ -99,6 +104,10 @@
         * @function setCurrentTime
         * @desc on the buzz object (music file) set the current time to (time) in seconds
         * @param {Number} time
+
+        * @function setVolume
+        * @desc when user clicks or drags, will be called on on-change attribute, using scope.value to change the volume
+        * @param {Number} volume
         */
         SongPlayer.play = function(song) {
             song = song || SongPlayer.currentSong; 
@@ -156,6 +165,12 @@
         SongPlayer.setCurrentTime = function(time) {
             if(currentBuzzObject){ //check there is a song that has been played and therefore is a buzz object
                 currentBuzzObject.setTime(time); //sets the time on the song in seconds to (time) number
+            }
+        };
+
+        SongPlayer.setVolume = function(volume) {
+            if(currentBuzzObject){
+                currentBuzzObject.setVolume(volume);
             }
         };
         
