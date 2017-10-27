@@ -26,8 +26,8 @@
             <h3 class="artist-name" ng-show="playerBar.songPlayer.currentSong.playing">{{playerBar.albumData.artist}}</h3>
             <div class="seek-control">
                 <seek-bar value="{{playerBar.songPlayer.currentTime}}" max="{{playerBar.songPlayer.currentSong.duration}}" on-change="playerBar.songPlayer.setCurrentTime(value)"></seek-bar> <!--these attributes allow us access to the values defined on them from the outside world, we can then utilise the value in our scope on the directive or in the case of onChange, decide to invoke it straight away-->
-                <div class="current-time" ng-show="playerBar.songPlayer.currentSong.playing">{{playerBar.songPlayer.currentTime}}</div>
-                <div class="total-time" ng-show="playerBar.songPlayer.currentSong.playing">{{playerBar.songPlayer.currentSong.duration}}</div>
+                <div class="current-time" ng-show="playerBar.songPlayer.currentSong.playing">{{playerBar.songPlayer.currentTime | timecode}}</div>
+                <div class="total-time" ng-show="playerBar.songPlayer.currentSong.playing">{{playerBar.songPlayer.currentSong.duration | timecode}}</div>
             </div>
         </div>
         
