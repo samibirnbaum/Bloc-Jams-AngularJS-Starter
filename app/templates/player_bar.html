@@ -32,7 +32,12 @@
         </div>
         
         <div class="control-group volume">
-            <span class="icon ion-volume-high"></span>
+            <a ng-click="playerBar.songPlayer.muteVolume()" ng-show="!playerBar.songPlayer.currentSong.mute">
+                <span class="icon ion-volume-high" ></span>
+            </a>    
+            <a ng-click="playerBar.songPlayer.unmuteVolume()" ng-show="playerBar.songPlayer.currentSong.mute">
+                <span class="icon ion-android-volume-off"></span>
+            </a>
             <seek-bar value="{{playerBar.songPlayer.volume}}" max="100" on-change="playerBar.songPlayer.setVolume(value)"></seek-bar> <!--this pulls down the initial value number from the service, to use the updated value from directive after user does something, pull down the set volume function to here and then call using (argument) which takes in scope.value-->
         </div>
 

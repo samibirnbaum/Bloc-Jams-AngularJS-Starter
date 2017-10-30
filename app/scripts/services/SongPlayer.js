@@ -173,6 +173,20 @@
                 currentBuzzObject.setVolume(volume);
             }
         };
+
+        SongPlayer.muteVolume = function(){
+            if(currentBuzzObject){
+                currentBuzzObject.mute();
+                SongPlayer.currentSong.mute = true;
+            }
+        };
+
+        SongPlayer.unmuteVolume = function(){
+            if(currentBuzzObject){
+                currentBuzzObject.unmute();
+                SongPlayer.currentSong.mute = false;                
+            }
+        };
         
         return SongPlayer; /*once service is injected, you get the SongPlayer object with all its methods and properties*/
     }
